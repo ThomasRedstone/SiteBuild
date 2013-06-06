@@ -30,13 +30,13 @@ $outputdirectory = APPLICATION_PATH.$outputsuffix;
  * does not exist it will create it with 077 permissions, but if that fails
  * it will fall to the else statement, and display an error.
  */
-if(file_exists($outputdirectory) || mkdir($outputdirectory,0777)) {
+if(file_exists($outputdirectory) || mkdir($outputdirectory,0775)) {
     /**
      * A quick check and fix to make sure that $outputdirectory can be written,
      * and hopefully a fix to make it writable if the chmod fails, an error
      * message will be shown.
      */
-    if(is_writable($outputdirectory) || chmod($outputdirectory, 0777)) {
+    if(is_writable($outputdirectory) || chmod($outputdirectory, 0775)) {
         $files = glob("{$directory}*.*");
         print_r($files);
         foreach($files as $file) {

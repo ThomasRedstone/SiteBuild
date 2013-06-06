@@ -84,8 +84,8 @@ class Theme {
         foreach ($menuTemp as $menuitem) {
             preg_match('~(.*?):(.*)~',$menuitem,$item);
             echo '<pre>'.print_r($item,1).'</pre>';
-            $id = $item[1];
-            $menu[$id] = $item[2];
+            $id = $item[2];
+            $menu[$id] = $item[1];
         }
         echo '<pre>'.print_r($menu,1).'</pre>';
         $menutext = '';

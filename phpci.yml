@@ -1,0 +1,28 @@
+build_settings:
+    clone_depth: 1 # depth of 1 is a shallow clone, remove this line to clone entire repo
+    ignore:
+        - "vendor"
+setup:
+    composer:
+        action: "install"
+test:
+    php_mess_detector:
+        allowed_warnings: 120
+        allow_failures: true
+        ignore:
+            - "vendor"
+    php_code_sniffer:
+        allowed_warnings: 10
+        allowed_errors: 10
+        standard: "PSR2"
+        ignore:
+            - "vendor"
+    php_cpd:
+        allow_failures: true
+    php_docblock_checker:
+        ignore:
+            - "vendor"
+        allowed_warnings: 70
+        ignore:
+            - "vendor"
+    php_loc:

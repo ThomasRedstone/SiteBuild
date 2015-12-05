@@ -1,6 +1,7 @@
 <?php
+namespace RedstoneTechnology\SiteBuild\Utilities;
 
-class Utilities {
+class File {
     public static function copy($source, $destination) {
         if(is_dir($source)) {
             $directory = opendir($source);

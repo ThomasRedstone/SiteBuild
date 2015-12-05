@@ -1,0 +1,12 @@
+{
+    "name": "ThomasRedstone/site-builder",
+    "require": {
+        "symfony/console": "~2.6",
+        "symfony/yaml": "~2.6"
+    },
+    "autoload": {
+        "psr-0": {
+            "RedstoneTechnology\\": "app"    
+        }
+    }
+}

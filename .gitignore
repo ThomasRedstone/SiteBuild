@@ -1,3 +1,4 @@
 # website specific files
 content/
-library/Michelf/
+.idea/
+vendor/

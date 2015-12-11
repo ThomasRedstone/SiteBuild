@@ -41,7 +41,7 @@ class Theme {
                     preg_replace(
                         '~/~', '::', str_replace(
                             '.php', '', str_replace(
-                                SITE_PATH.'/content/', '', $filePath
+                                SITE_PATH.'/', '', $filePath
                             )
                         ), 1
                     )
@@ -108,7 +108,7 @@ class Theme {
     }
     private function populateTemplate($template) {
         #die(var_dump($this->content));
-        $content = file_get_contents(SITE_PATH."/content/themes/$template.html");
+        $content = file_get_contents(SITE_PATH."/themes/$template.html");
         foreach ($this->content as $id => $pageElement) {
             $pattern = "~({{{$id}}})~";
             $content = preg_replace($pattern, $pageElement, $content);
@@ -117,12 +117,12 @@ class Theme {
     }
     
     public function buildMenu($menuName) {
-        $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/content/menus/$menuName.yml"));
+        $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/menus/$menuName.yaml"));
         if(!empty($menu)) {
             $this->content['menu'] = $menu;
         } else {
             throw new \Exception("Menu {$menuName} is empty or file does not exist at path ".
-                SITE_PATH."/content/menus/$menuName.yml");
+                SITE_PATH."/menus/$menuName.yaml");
         }
         $this->template->addData(['menu' => $menu]);
     }

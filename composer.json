@@ -1,6 +1,8 @@
 {
-    "name": "ThomasRedstone/site-builder",
+    "name": "ThomasRedstone/SiteBuild",
+    "description": "A simple static website builder"
     "require": {
+        "php": ">=5.4.0",
         "symfony/console": "~2.6",
         "symfony/yaml": "~2.6",
         "league/plates": "3.*",
@@ -10,5 +12,6 @@
         "psr-0": {
             "RedstoneTechnology\\": "app"    
         }
-    }
+    },
+    "bin": ["sitebuild"]
 }

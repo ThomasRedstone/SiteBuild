@@ -32,7 +32,7 @@ class SiteBuild
         $yaml = new Parser();
         $appConfig = $yaml->parse(file_get_contents($appConfigPath));
         if (!is_dir($name)) {
-            throw new \Exception("A directory with \"{$name}\" must exists, with a config.yml file.");
+            throw new \Exception("A directory with \"{$name}\" must exists, with a config.yaml file.");
         }
         chdir($name);
 
@@ -40,10 +40,10 @@ class SiteBuild
          * Setting some variables to allow for easily read paths later on.
          */
         define('SITE_PATH', getcwd());
-        $this->theme->addFolder('templates', SITE_PATH.'/content/themes/');
-        $this->theme->addFolder('pages', SITE_PATH.'/content/pages/');
-        $directory = SITE_PATH.'/content/pages/';
-        $this->outputSuffix = '/content/output/'.date("Y-m-d").'/';
+        $this->theme->addFolder('templates', SITE_PATH.'/themes/');
+        $this->theme->addFolder('pages', SITE_PATH.'/pages/');
+        $directory = SITE_PATH.'/pages/';
+        $this->outputSuffix = '/output/'.date("Y-m-d").'/';
         $this->outputDirectory = SITE_PATH.$this->outputSuffix;
 
         /**
@@ -59,7 +59,7 @@ class SiteBuild
              */
             if (is_writable($this->outputDirectory) || chmod($this->outputDirectory, 0775)) {
                 $this->processFiles($directory, '');
-                File::copy(SITE_PATH.'/content/resources/', $this->outputDirectory);
+                File::copy(SITE_PATH.'/resources/', $this->outputDirectory);
             }
             else {
                 echo "Making the output directory writable failed, check the parent folder\'s permissions\n";
@@ -72,9 +72,7 @@ class SiteBuild
 
     protected function processFiles($directory, $targetDirectory)
     {
-        #echo "Directory is {$directory}\n";
         $files = glob("{$directory}*");
-        #print_r($files);
         $this->theme->buildMenu('main');
         foreach($files as $file) {
             if($file === $directory) {
@@ -82,7 +80,7 @@ class SiteBuild
             }
             if(is_dir($file)) {
                 #echo "File {$file} is a directory\n";
-                $directoryPath = str_replace(SITE_PATH.'/content/pages/','',$file)."/";
+                $directoryPath = str_replace(SITE_PATH.'/pages/','',$file)."/";
                 #echo "Target directory is {$directoryPath}\n";
                 $this->processFiles("{$file}/", $directoryPath);
                 continue;
@@ -107,9 +105,9 @@ class SiteBuild
     {
         $fileInfo = pathinfo($config);
         if (empty($fileInfo['extension'])) {
-            $config .= '.yml';
+            $config .= '.yaml';
         }
-        if($config === 'app.yml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
+        if($config === 'app.yaml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
             return APP_PATH."/../{$this->name}/{$config}";
         }
         if (is_file($config)) {

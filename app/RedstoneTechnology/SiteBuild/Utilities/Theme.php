@@ -42,7 +42,8 @@ class Theme {
                 echo "Extension '$extension' is not recognised\n";
                 break;
         }
-        $this->populateTemplate('template');
+        $template = $this->header['template'] ?: 'template';
+        $this->populateTemplate($template);
         return $this->page;
     }
     
@@ -51,12 +52,22 @@ class Theme {
         #{{tags:User Guides}}
         #{{date:2014-07-21}}
         #{{title:Browser Cache}}
-        $header['title'] = preg_match('~{{title:(.*)}}~');
-        $header['date'] = preg_match('~{{date:(.*)}}~');
-        $header['tags'] = preg_match('~{{tags:(.*)}}~');
+        #{{template:business}}
+        $header['title']    = $this->getFirstMatch('~{{title:(.*)}}~', $file);
+        $header['date']     = $this->getFirstMatch('~{{date:(.*)}}~', $file);
+        $header['tags']     = $this->getFirstMatch('~{{tags:(.*)}}~', $file);
+        $header['template'] = $this->getFirstMatch('~{{template:(.*)}}~', $file);
         $this->header = $header;
         $this->text = $file;
-        
+    }
+
+    protected function getFirstMatch($rule, $data)
+    {
+        $result = preg_match($rule, $data, $matches);
+        if($result === 1) {
+            return $matches[1];
+        }
+        return false;
     }
     
     private function buildHead($header) {
@@ -68,6 +79,7 @@ class Theme {
                     break;
                 case 'tags':
                 case 'date':
+                case 'template':
                     break;
                 default:
                     $content .= "<meta name='$field' content='$metadata'>";
@@ -81,7 +93,6 @@ class Theme {
         $content = file_get_contents(SITE_PATH."/content/themes/$template.html");
         foreach ($this->content as $id => $pageElement) {
             $pattern = "~({{{$id}}})~";
-            echo "pattern: {$pattern}\nid: {$id}\npageElement:{$pageElement}\n'";
             $content = preg_replace($pattern, $pageElement, $content);
         }
         $this->page = $content;
@@ -91,8 +102,8 @@ class Theme {
         $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/content/menus/$menuName.yml"));
         if(!empty($menu)) {
             $menuText = '';
-            foreach ($menu as $name => $url) {
-                $menuText .= "<li class='nav-item'><a href='$url'>$name</a></li>";
+            foreach ($menu as $menuItem) {
+                $menuText .= "<li class='nav-item'><a class='nav-link' href='{$menuItem['url']}'>{$menuItem['text']}</a></li>";
             }
             $this->content['menu'] = $menuText;
         } else {

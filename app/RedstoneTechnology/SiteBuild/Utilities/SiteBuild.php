@@ -49,13 +49,13 @@ class SiteBuild
          * does not exist it will create it with 077 permissions, but if that fails
          * it will fall to the else statement, and display an error.
          */
-        if(file_exists($this->outputDirectory) || mkdir($this->outputDirectory, 0775, true)) {
+        if (file_exists($this->outputDirectory) || mkdir($this->outputDirectory, 0775, true)) {
             /**
              * A quick check and fix to make sure that $outputDirectory can be written,
              * and hopefully a fix to make it writable if the chmod fails, an error
              * message will be shown.
              */
-            if(is_writable($this->outputDirectory) || chmod($this->outputDirectory, 0775)) {
+            if (is_writable($this->outputDirectory) || chmod($this->outputDirectory, 0775)) {
                 $this->processFiles($directory, '');
                 File::copy(SITE_PATH.'/content/resources/', $this->outputDirectory);
             }
@@ -70,30 +70,30 @@ class SiteBuild
 
     protected function processFiles($directory, $targetDirectory)
     {
-        echo "Directory is {$directory}\n";
+        #echo "Directory is {$directory}\n";
         $files = glob("{$directory}*");
-        print_r($files);
+        #print_r($files);
         foreach($files as $file) {
             if($file === $directory) {
                 continue;
             }
             if(is_dir($file)) {
-                echo "File {$file} is a directory\n";
+                #echo "File {$file} is a directory\n";
                 $directoryPath = str_replace(SITE_PATH.'/content/pages/','',$file)."/";
-                echo "Target directory is {$directoryPath}\n";
-                #die();
+                #echo "Target directory is {$directoryPath}\n";
                 $this->processFiles("{$file}/", $directoryPath);
                 continue;
             }
             $content = $this->theme->buildPage($file);
-            $outputFilename = pathinfo(basename($file), PATHINFO_FILENAME).'.html';
-            $outputFile = "{$this->outputDirectory}{$targetDirectory}{$outputFilename}";
-            echo "outputFile: $outputFile\n";
+            $outputFilename = pathinfo(basename($file), PATHINFO_FILENAME);
+            $outputFile = "{$this->outputDirectory}{$targetDirectory}{$outputFilename}".
+                ($outputFilename === 'index' ? '' : '/index').'.html';
+            #echo "outputFile: $outputFile\n";
             if(!is_dir(dirname($outputFile))) {
                 mkdir(dirname($outputFile), 0755, true);
             }
             $f = fopen($outputFile, "w");
-            echo "<h1>Output for $file</h1><a href='/sitebuild{$this->outputSuffix}{$outputFilename}'>".basename($file)."</a>";
+            #echo "<h1>Output for $file</h1><a href='/sitebuild{$this->outputSuffix}{$outputFilename}'>".basename($file)."</a>";
             fwrite($f, $content);
             fclose($f);
             unset($f);

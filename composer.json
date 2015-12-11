@@ -1,5 +1,5 @@
 {
-    "name": "ThomasRedstone/SiteBuild",
+    "name": "thomas-redstone/site-build",
     "description": "A simple static website builder",
     "require": {
         "php": ">=5.4.0",

@@ -1,6 +1,6 @@
 {
     "name": "ThomasRedstone/SiteBuild",
-    "description": "A simple static website builder"
+    "description": "A simple static website builder",
     "require": {
         "php": ">=5.4.0",
         "symfony/console": "~2.6",

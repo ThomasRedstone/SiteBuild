@@ -2,7 +2,9 @@
     "name": "ThomasRedstone/site-builder",
     "require": {
         "symfony/console": "~2.6",
-        "symfony/yaml": "~2.6"
+        "symfony/yaml": "~2.6",
+        "league/plates": "3.*",
+        "erusev/parsedown": "^1.6"
     },
     "autoload": {
         "psr-0": {

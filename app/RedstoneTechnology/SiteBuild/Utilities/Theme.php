@@ -1,14 +1,10 @@
 <?php
 namespace RedstoneTechnology\SiteBuild\Utilities;
 
-
 /**
  * The Theme class stitches together all of the parts of a page.
  */
-
-
 use Symfony\Component\Yaml\Parser;
-use Michelf\Markdown;
 
 class Theme {
     protected $yaml;
@@ -18,32 +14,54 @@ class Theme {
     protected $page;
     protected $text;
     protected $menus = array();
+    protected $template;
     
-    public function __construct($config = array()) {
+    public function __construct($template, $config = array())
+    {
+        $this->template = $template;
         $this->config = $config;
         $this->yaml = new Parser();
     }
+
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+    public function addFolder($name, $folder)
+    {
+        $this->template->addFolder($name, $folder);
+    }
     
     public function buildPage($filePath) {
-        $this->buildMenu('main');
-        $file = file_get_contents($filePath);
-        $this->processSource($file);
-        $this->content['header'] = $this->buildHead($this->header);
         $extension = pathinfo($filePath, PATHINFO_EXTENSION);
         switch($extension) {
+            case 'php':
+                $this->page = $this->template->render(
+                    preg_replace(
+                        '~/~', '::', str_replace(
+                            '.php', '', str_replace(
+                                SITE_PATH.'/content/', '', $filePath
+                            )
+                        ), 1
+                    )
+                );
+                return $this->page;
+                break;
             case 'html':
             case 'htm':
-                $this->content['content'] = $this->text;
+            $file = file_get_contents($filePath);
+            $this->processSource($file);
+            $this->content['header'] = $this->buildHead($this->header);
+            $this->content['content'] = $this->text;
                 break;
             case 'md':
-                $this->content['content'] = Markdown::defaultTransform($this->text);
+                $this->content['content'] = \Parsedown::defaultTransform($this->text);
                 break;
             default:
                 echo "Extension '$extension' is not recognised\n";
                 break;
         }
-        $template = $this->header['template'] ?: 'template';
-        $this->populateTemplate($template);
         return $this->page;
     }
     
@@ -98,18 +116,14 @@ class Theme {
         $this->page = $content;
     }
     
-    private function buildMenu($menuName) {
+    public function buildMenu($menuName) {
         $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/content/menus/$menuName.yml"));
         if(!empty($menu)) {
-            $menuText = '';
-            foreach ($menu as $menuItem) {
-                $menuText .= "<li class='nav-item'><a class='nav-link' href='{$menuItem['url']}'>{$menuItem['text']}</a></li>";
-            }
-            $this->content['menu'] = $menuText;
+            $this->content['menu'] = $menu;
         } else {
             throw new \Exception("Menu {$menuName} is empty or file does not exist at path ".
                 SITE_PATH."/content/menus/$menuName.yml");
         }
-        
+        $this->template->addData(['menu' => $menu]);
     }
 }

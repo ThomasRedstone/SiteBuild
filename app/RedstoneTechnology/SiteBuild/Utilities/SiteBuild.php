@@ -40,6 +40,8 @@ class SiteBuild
          * Setting some variables to allow for easily read paths later on.
          */
         define('SITE_PATH', getcwd());
+        $this->theme->addFolder('templates', SITE_PATH.'/content/themes/');
+        $this->theme->addFolder('pages', SITE_PATH.'/content/pages/');
         $directory = SITE_PATH.'/content/pages/';
         $this->outputSuffix = '/content/output/'.date("Y-m-d").'/';
         $this->outputDirectory = SITE_PATH.$this->outputSuffix;
@@ -73,6 +75,7 @@ class SiteBuild
         #echo "Directory is {$directory}\n";
         $files = glob("{$directory}*");
         #print_r($files);
+        $this->theme->buildMenu('main');
         foreach($files as $file) {
             if($file === $directory) {
                 continue;

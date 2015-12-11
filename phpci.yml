@@ -7,7 +7,7 @@ setup:
         action: "install"
 test:
     php_mess_detector:
-        allowed_warnings: 120
+        allowed_warnings: 15
         allow_failures: true
         ignore:
             - "vendor"

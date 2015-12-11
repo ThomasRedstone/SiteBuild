@@ -18,7 +18,6 @@ use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
 
-
 class SiteBuild extends Command
 {
     protected $serverBuild;
@@ -26,7 +25,6 @@ class SiteBuild extends Command
     public function __construct(\RedstoneTechnology\SiteBuild\Utilities\SiteBuild $siteBuild)
     {
         $this->siteBuild = $siteBuild;
-
         parent::__construct();
     }
 

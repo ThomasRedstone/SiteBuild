@@ -1,8 +1,18 @@
 <?php
 namespace RedstoneTechnology\SiteBuild\Utilities;
 
+/**
+ * A collection of functions to work with files.
+ * Class File
+ * @package RedstoneTechnology\SiteBuild\Utilities
+ */
 class File
 {
+    /**
+     * Copies one directory to another.
+     * @param $source
+     * @param $destination
+     */
     public function copy($source, $destination)
     {
         if (is_dir($source)) {
@@ -12,13 +22,13 @@ class File
             }
             while (false !== ($file = readdir($directory))) {
                 if (!in_array($file, array('.', '..'))) {
-                    $filepath = "$source/$file";
-                    $filedestination = "$destination/$file";
-                    if (is_dir($filepath)) {
-                        self::copy($filepath, $filedestination);
+                    $filePath = "$source/$file";
+                    $fileDestination = "$destination/$file";
+                    if (is_dir($filePath)) {
+                        self::copy($filePath, $fileDestination);
                     }
                     else {
-                        copy($filepath, $filedestination);
+                        copy($filePath, $fileDestination);
                     }
                 }
             }

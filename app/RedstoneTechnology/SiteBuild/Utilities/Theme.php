@@ -1,11 +1,13 @@
 <?php
 namespace RedstoneTechnology\SiteBuild\Utilities;
 
-/**
- * The Theme class stitches together all of the parts of a page.
- */
 use Symfony\Component\Yaml\Parser;
 
+/**
+ * Class Theme
+ * The Theme class stitches together all of the parts of a page.
+ * @package RedstoneTechnology\SiteBuild\Utilities
+ */
 class Theme {
     protected $yaml;
     protected $config;

@@ -13,6 +13,9 @@ For each site, you create a directory structure like this:
     - resources
     - themes
 
+## Installation
+    composer 
+
 ## Menus
 Menus are defined as .yaml files, at present there is only a main menu which will be used, but it is planned to support
 many menus in the future. For now, the main menu should exist in menus/main.yaml, the format being as follows:

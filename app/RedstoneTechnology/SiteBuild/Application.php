@@ -13,6 +13,10 @@ use RedstoneTechnology\SiteBuild\Commands\SiteBuild;
 use RedstoneTechnology\SiteBuild\Utilities;
 use \League\Plates\Engine;
 
+/**
+ * Class Application
+ * @package RedstoneTechnology\SiteBuild
+ */
 class Application extends \Symfony\Component\Console\Application
 {
     /**

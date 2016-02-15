@@ -7,6 +7,10 @@ use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Helper\QuestionHelper;
 
+/**
+ * Class SiteBuild
+ * @package RedstoneTechnology\SiteBuild\Utilities
+ */
 class SiteBuild
 {
     protected $script = '';
@@ -15,12 +19,24 @@ class SiteBuild
     protected $outputSuffix;
     protected $outputDirectory;
 
+    /**
+     * SiteBuild constructor.
+     * @param Theme $theme
+     * @param File $file
+     */
     public function __construct(Theme $theme, File $file)
     {
         $this->theme = $theme;
         $this->file = $file;
     }
 
+    /**
+     * Performs the task of building a static website.
+     * @param $name
+     * @param $input
+     * @param $output
+     * @throws \Exception
+     */
     public function build($name, $input, $output)
     {
         $yaml = new Parser();
@@ -71,6 +87,13 @@ class SiteBuild
         }
     }
 
+    /**
+     * Loops through a given directory recursively, building template files and saving the results into the target
+     * directory.
+     * @param $directory
+     * @param $targetDirectory
+     * @throws \Exception
+     */
     protected function processFiles($directory, $targetDirectory)
     {
         $files = glob("{$directory}*");
@@ -90,18 +113,23 @@ class SiteBuild
             $outputFilename = pathinfo(basename($file), PATHINFO_FILENAME);
             $outputFile = "{$this->outputDirectory}{$targetDirectory}{$outputFilename}".
                 ($outputFilename === 'index' ? '' : '/index').'.html';
-            #echo "outputFile: $outputFile\n";
             if(!is_dir(dirname($outputFile))) {
                 mkdir(dirname($outputFile), 0755, true);
             }
             $f = fopen($outputFile, "w");
-            #echo "<h1>Output for $file</h1><a href='/sitebuild{$this->outputSuffix}{$outputFilename}'>".basename($file)."</a>";
             fwrite($f, $content);
             fclose($f);
             unset($f);
         }
     }
 
+    /**
+     * Checks a few possible locations of the config file, and returns the first one it finds, throwing an exception
+     * if a config file cannot be found.
+     * @param $config
+     * @return string
+     * @throws \Exception
+     */
     protected function getConfigPath($config)
     {
         $fileInfo = pathinfo($config);
@@ -117,8 +145,7 @@ class SiteBuild
         if (is_file(APP_PATH . "/{$config}")) {
             return APP_PATH . "/{$config}";
         }
-        echo "Can't seem to find path for {$config}\n";
-        return realpath("./{$config}") . "\n";
+        throw new \Exception("Can't seem to find path for {$config}");
     }
 }
 

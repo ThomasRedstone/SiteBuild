@@ -3,7 +3,7 @@ namespace RedstoneTechnology\SiteBuild\Utilities;
 
 class File
 {
-    public static function copy($source, $destination)
+    public function copy($source, $destination)
     {
         if (is_dir($source)) {
             $directory = opendir($source);

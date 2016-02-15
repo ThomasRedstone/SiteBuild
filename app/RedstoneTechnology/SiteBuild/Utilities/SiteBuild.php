@@ -15,9 +15,10 @@ class SiteBuild
     protected $outputSuffix;
     protected $outputDirectory;
 
-    public function __construct($theme)
+    public function __construct(Theme $theme, File $file)
     {
         $this->theme = $theme;
+        $this->file = $file;
     }
 
     public function build($name, $input, $output)

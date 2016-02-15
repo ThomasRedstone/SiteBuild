@@ -16,7 +16,7 @@ class Theme {
     protected $menus = array();
     protected $template;
     
-    public function __construct($template, $config = array())
+    public function __construct(\League\Plates\Engine $template, $config = array())
     {
         $this->template = $template;
         $this->config = $config;

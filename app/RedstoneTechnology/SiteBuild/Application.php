@@ -10,6 +10,8 @@ namespace RedstoneTechnology\SiteBuild;
 
 
 use RedstoneTechnology\SiteBuild\Commands\SiteBuild;
+use RedstoneTechnology\SiteBuild\Utilities;
+use \League\Plates\Engine;
 
 class Application extends \Symfony\Component\Console\Application
 {
@@ -37,10 +39,11 @@ class Application extends \Symfony\Component\Console\Application
         // which is used when using the --help option
         $defaultCommands = parent::getDefaultCommands();
 
-        $templates = new \League\Plates\Engine();
-        $theme = new \RedstoneTechnology\SiteBuild\Utilities\Theme($templates);
+        $templates = new Engine();
+        $theme = new Utilities\Theme($templates);
+        $file = new Utilities\File();
         $defaultCommands[] = new Commands\SiteBuild(
-            new \RedstoneTechnology\SiteBuild\Utilities\SiteBuild($theme)
+            new Utilities\SiteBuild($theme, $file)
         );
 
         return $defaultCommands;

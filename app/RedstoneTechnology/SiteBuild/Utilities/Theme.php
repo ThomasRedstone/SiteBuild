@@ -119,12 +119,12 @@ class Theme {
     }
     
     public function buildMenu($menuName) {
-        $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/menus/$menuName.yaml"));
+        $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/menus/$menuName.yml"));
         if(!empty($menu)) {
             $this->content['menu'] = $menu;
         } else {
             throw new \Exception("Menu {$menuName} is empty or file does not exist at path ".
-                SITE_PATH."/menus/$menuName.yaml");
+                SITE_PATH."/menus/$menuName.yml");
         }
         $this->template->addData(['menu' => $menu]);
     }

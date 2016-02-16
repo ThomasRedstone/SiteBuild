@@ -19,14 +19,19 @@ For each site, you create a directory structure like this:
 Add the following to your .bashrc, .zshrc or what ever is required to alter your path variable!
 For OSX or Linux, it will be something like this
     export PATH="$PATH:$HOME/.composer/vendor/bin"
+
 The best resource I could find, which explains how to modify the path seems to be this help page from Oracle, for Java,
 but it still applies for PHP and composer, so if you're on Windows, or just about any Operating System under the Sun,
 this should tell you how to modify your path:
-[https://java.com/en/download/help/path.xml]
+
+https://java.com/en/download/help/path.xml
+
+## Usage
 
 ## Menus
-Menus are defined as .yaml files, at present there is only a main menu which will be used, but it is planned to support
-many menus in the future. For now, the main menu should exist in menus/main.yaml, the format being as follows:
+Menus are defined as .yml files, at present there is only a main menu which will be used, but it is planned to support
+many menus in the future. For now, the main menu should exist in menus/main.yml, the format being as follows:
+
     -
       url: "/"
       text: Home

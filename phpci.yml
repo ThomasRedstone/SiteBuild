@@ -6,17 +6,17 @@ setup:
     composer:
         action: "install"
 test:
-    php_mess_detector:
-        allowed_warnings: 15
-        allow_failures: true
-        ignore:
-            - "vendor"
-    php_code_sniffer:
-        allowed_warnings: 10
-        allowed_errors: 10
-        standard: "PSR2"
-        ignore:
-            - "vendor"
+#    php_mess_detector:
+#        allowed_warnings: 15
+#        allow_failures: true
+#        ignore:
+#            - "vendor"
+#    php_code_sniffer:
+#        allowed_warnings: 10
+#        allowed_errors: 10
+#        standard: "PSR2"
+#        ignore:
+#            - "vendor"
     php_cpd:
         allow_failures: true
     php_docblock_checker:

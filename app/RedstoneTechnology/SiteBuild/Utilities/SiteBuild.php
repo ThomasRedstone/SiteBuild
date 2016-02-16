@@ -55,7 +55,7 @@ class SiteBuild
             throw new \Exception("The application config file at \"{$appConfigPath}\" does not exist");
         }
         $yaml = new Parser();
-        $appConfig = $yaml->parse(file_get_contents($appConfigPath));
+        $this->config = $yaml->parse(file_get_contents($appConfigPath));
         chdir("{$this->currentDirectory}/{$this->name}");
 
         /**
@@ -145,7 +145,7 @@ class SiteBuild
         if (empty($fileInfo['extension'])) {
             $config .= '.yml';
         }
-        if($config === 'app.yaml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
+        if($config === 'app.yml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
             return APP_PATH."/../{$this->name}/{$config}";
         }
         if(is_file("{$this->currentDirectory}/{$this->name}/{$config}")) {

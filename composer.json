@@ -10,7 +10,8 @@
     },
     "require-dev": {
         "sebastian/phpcpd": "*",
-        "phpmd/phpmd": "1.4.*"
+        "phpmd/phpmd": "^2.3",
+        "squizlabs/php_codesniffer": "^2.5"
     },
     "autoload": {
         "psr-0": {

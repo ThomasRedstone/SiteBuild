@@ -28,6 +28,25 @@ https://java.com/en/download/help/path.xml
 
 ## Usage
 
+First of all, you must ensure that there is an 'app.yml' configuration file containing the site name, inside the
+ project folder e.g.:
+
+    name: ExampleSite
+
+At present, this is not used, but it must exist, as SiteBuild uses it as confirmation that it is being run in the
+correct directory.
+
+Next, run the sitebuild command:
+
+    sitebuild
+
+At this point you should have a populated `output` directory. The directory `output/latest` will always contain
+the most recently generated site, and you can test it works locally as follows:
+
+    cd output/latest && php -S localhost:8080
+
+At which point, you should be able to navigate to http://localhost:8080 and see your website.
+
 ## Menus
 Menus are defined as .yml files, at present there is only a main menu which will be used, but it is planned to support
 many menus in the future. For now, the main menu should exist in menus/main.yml, the format being as follows:

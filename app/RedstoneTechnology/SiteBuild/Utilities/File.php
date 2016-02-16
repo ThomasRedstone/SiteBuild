@@ -25,7 +25,7 @@ class File
                     $filePath = "$source/$file";
                     $fileDestination = "$destination/$file";
                     if (is_dir($filePath)) {
-                        self::copy($filePath, $fileDestination);
+                        $this->copy($filePath, $fileDestination);
                     }
                     else {
                         copy($filePath, $fileDestination);
@@ -34,5 +34,37 @@ class File
             }
             closedir($directory);
         }
+    }
+
+    /**
+     * Gets the current working directory.
+     * @return string
+     */
+    public function getCurrentDirectory()
+    {
+        return getcwd();
+    }
+
+    /**
+     * Recursively deletes a directory, and all its contents.
+     * @param $directory
+     * @return bool
+     */
+    public function deleteDirectory($directory)
+    {
+        $files = array_diff(scandir($directory), array('.', '..'));
+        foreach ($files as $file) {
+            if(is_dir("{$directory}/{$file}")) {
+                $this->deleteDirectory("{$directory}/{$file}");
+            } else {
+                unlink("{$directory}/{$file}");
+            }
+        }
+        return rmdir($directory);
+    }
+
+    public function exists($file)
+    {
+        return file_exists($file);
     }
 }

@@ -45,9 +45,6 @@ class SiteBuild extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getOption('name');
-        if (!$name) {
-            throw new \Exception('Name is a required input.');
-        }
         $this->siteBuild->build($name, $input, $output);
     }
 }

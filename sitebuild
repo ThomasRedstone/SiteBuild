@@ -4,12 +4,22 @@
 
 define('APP_PATH', __DIR__);
 
+/**
+ * Simply includes a file, if it exists, otherwise does nothing.
+ * @param $file
+ * @return mixed
+ */
 function includeIfExists($file)
 {
     if (file_exists($file)) {
         return include $file;
     }
 }
+
+/**
+ * Includes a range of possible places the Composer Autoloader could be hiding, it depends how this package has been
+ * installed!
+ */
 if (
     (!$loader = includeIfExists(__DIR__.'/../vendor/autoload.php')) &&
     (!$loader = includeIfExists(__DIR__.'/../../autoload.php')) &&
@@ -18,11 +28,10 @@ if (
 ) {
     $msg = 'You must set up the project dependencies, run the following commands:'.PHP_EOL.
         'curl -sS https://getcomposer.org/installer | php'.PHP_EOL.
-        'php composer.phar install'.PHP_EOL;
+        'php composer.phar global require thomas-redstone/site-build'.PHP_EOL;
     fwrite(STDERR, $msg);
     exit(1);
 }
-require __DIR__.'/vendor/autoload.php';
 
 use RedstoneTechnology\SiteBuild\Commands;
 use RedstoneTechnology\SiteBuild\Application;

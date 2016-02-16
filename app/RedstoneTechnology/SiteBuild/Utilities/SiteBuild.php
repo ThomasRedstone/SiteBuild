@@ -18,6 +18,7 @@ class SiteBuild
     protected $name;
     protected $outputSuffix;
     protected $outputDirectory;
+    protected $currentDirectory;
 
     /**
      * SiteBuild constructor.
@@ -28,6 +29,7 @@ class SiteBuild
     {
         $this->theme = $theme;
         $this->file = $file;
+        $this->currentDirectory = $this->file->getCurrentDirectory();
     }
 
     /**
@@ -41,6 +43,12 @@ class SiteBuild
     {
         $yaml = new Parser();
         $this->name = $name;
+        if(is_null($name) === true && is_file("{$this->currentDirectory}/app.yml") === true) {
+            $this->name = basename($this->currentDirectory);
+            $this->currentDirectory = dirname($this->currentDirectory);
+        } elseif (!is_dir($name)) {
+            throw new \Exception("A directory with \"{$name}\" must exists, with a config.yaml file.");
+        }
 
         $appConfigPath = $this->getConfigPath('app');
         if (!is_file($appConfigPath)) {
@@ -48,10 +56,7 @@ class SiteBuild
         }
         $yaml = new Parser();
         $appConfig = $yaml->parse(file_get_contents($appConfigPath));
-        if (!is_dir($name)) {
-            throw new \Exception("A directory with \"{$name}\" must exists, with a config.yaml file.");
-        }
-        chdir($name);
+        chdir("{$this->currentDirectory}/{$this->name}");
 
         /**
          * Setting some variables to allow for easily read paths later on.
@@ -60,7 +65,7 @@ class SiteBuild
         $this->theme->addFolder('templates', SITE_PATH.'/themes/');
         $this->theme->addFolder('pages', SITE_PATH.'/pages/');
         $directory = SITE_PATH.'/pages/';
-        $this->outputSuffix = '/output/'.date("Y-m-d").'/';
+        $this->outputSuffix = '/output/'.date("Y-m-d_h.i").'/';
         $this->outputDirectory = SITE_PATH.$this->outputSuffix;
 
         /**
@@ -68,7 +73,7 @@ class SiteBuild
          * does not exist it will create it with 077 permissions, but if that fails
          * it will fall to the else statement, and display an error.
          */
-        if (file_exists($this->outputDirectory) || mkdir($this->outputDirectory, 0775, true)) {
+        if ($this->file->exists($this->outputDirectory) || mkdir($this->outputDirectory, 0775, true)) {
             /**
              * A quick check and fix to make sure that $outputDirectory can be written,
              * and hopefully a fix to make it writable if the chmod fails, an error
@@ -76,7 +81,11 @@ class SiteBuild
              */
             if (is_writable($this->outputDirectory) || chmod($this->outputDirectory, 0775)) {
                 $this->processFiles($directory, '');
-                File::copy(SITE_PATH.'/resources/', $this->outputDirectory);
+                $this->file->copy(SITE_PATH.'/resources/', $this->outputDirectory);
+                if($this->file->exists(SITE_PATH.'/output/latest')) {
+                    $this->file->deleteDirectory(SITE_PATH.'/output/latest');
+                }
+                $this->file->copy($this->outputDirectory, SITE_PATH.'/output/latest');
             }
             else {
                 echo "Making the output directory writable failed, check the parent folder\'s permissions\n";
@@ -134,10 +143,13 @@ class SiteBuild
     {
         $fileInfo = pathinfo($config);
         if (empty($fileInfo['extension'])) {
-            $config .= '.yaml';
+            $config .= '.yml';
         }
         if($config === 'app.yaml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
             return APP_PATH."/../{$this->name}/{$config}";
+        }
+        if(is_file("{$this->currentDirectory}/{$this->name}/{$config}")) {
+            return "{$this->currentDirectory}/{$this->name}/{$config}";
         }
         if (is_file($config)) {
             return $config;

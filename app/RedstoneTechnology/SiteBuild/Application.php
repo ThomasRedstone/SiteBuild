@@ -8,7 +8,6 @@
 
 namespace RedstoneTechnology\SiteBuild;
 
-
 use RedstoneTechnology\SiteBuild\Commands\SiteBuild;
 use RedstoneTechnology\SiteBuild\Utilities;
 use \League\Plates\Engine;

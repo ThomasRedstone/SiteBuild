@@ -18,16 +18,27 @@ use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
 use \Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class SiteBuild
+ * @package RedstoneTechnology\SiteBuild\Commands
+ */
 class SiteBuild extends Command
 {
     protected $serverBuild;
 
+    /**
+     * SiteBuild constructor.
+     * @param \RedstoneTechnology\SiteBuild\Utilities\SiteBuild $siteBuild
+     */
     public function __construct(\RedstoneTechnology\SiteBuild\Utilities\SiteBuild $siteBuild)
     {
         $this->siteBuild = $siteBuild;
         parent::__construct();
     }
 
+    /**
+     * Configures the command.
+     */
     protected function configure()
     {
         $this
@@ -42,6 +53,11 @@ class SiteBuild extends Command
         ;
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $name = $input->getOption('name');

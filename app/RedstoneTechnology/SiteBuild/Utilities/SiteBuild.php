@@ -145,7 +145,7 @@ class SiteBuild
         if (empty($fileInfo['extension'])) {
             $config .= '.yml';
         }
-        if($config === 'app.yml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
+        if($config === 'app.yaml' && is_file(APP_PATH."/../{$this->name}/{$config}")) {
             return APP_PATH."/../{$this->name}/{$config}";
         }
         if(is_file("{$this->currentDirectory}/{$this->name}/{$config}")) {

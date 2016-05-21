@@ -17,7 +17,12 @@ class Theme {
     protected $text;
     protected $menus = array();
     protected $template;
-    
+
+    /**
+     * Theme constructor.
+     * @param \League\Plates\Engine $template
+     * @param array $config
+     */
     public function __construct(\League\Plates\Engine $template, $config = array())
     {
         $this->template = $template;
@@ -25,16 +30,27 @@ class Theme {
         $this->yaml = new Parser();
     }
 
+    /**
+     * @param array $config
+     */
     public function setConfig(array $config)
     {
         $this->config = $config;
     }
 
+    /**
+     * @param $name
+     * @param $folder
+     */
     public function addFolder($name, $folder)
     {
         $this->template->addFolder($name, $folder);
     }
-    
+
+    /**
+     * @param $filePath
+     * @return mixed
+     */
     public function buildPage($filePath) {
         $extension = pathinfo($filePath, PATHINFO_EXTENSION);
         switch($extension) {
@@ -66,7 +82,10 @@ class Theme {
         }
         return $this->page;
     }
-    
+
+    /**
+     * @param $file
+     */
     private function processSource($file) {
         #$this->header = $header;
         #{{tags:User Guides}}
@@ -81,6 +100,11 @@ class Theme {
         $this->text = $file;
     }
 
+    /**
+     * @param $rule
+     * @param $data
+     * @return bool
+     */
     protected function getFirstMatch($rule, $data)
     {
         $result = preg_match($rule, $data, $matches);
@@ -89,7 +113,11 @@ class Theme {
         }
         return false;
     }
-    
+
+    /**
+     * @param $header
+     * @return string
+     */
     private function buildHead($header) {
         $content = '';
         foreach($header as $field => $metadata) {
@@ -108,6 +136,10 @@ class Theme {
         }
         return $content;
     }
+
+    /**
+     * @param $template
+     */
     private function populateTemplate($template) {
         #die(var_dump($this->content));
         $content = file_get_contents(SITE_PATH."/themes/$template.html");
@@ -117,7 +149,11 @@ class Theme {
         }
         $this->page = $content;
     }
-    
+
+    /**
+     * @param $menuName
+     * @throws \Exception
+     */
     public function buildMenu($menuName) {
         $menu = $this->yaml->parse(file_get_contents(SITE_PATH."/menus/$menuName.yml"));
         if(!empty($menu)) {

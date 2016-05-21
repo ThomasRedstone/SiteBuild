@@ -63,6 +63,10 @@ class File
         return rmdir($directory);
     }
 
+    /**
+     * @param $file
+     * @return bool
+     */
     public function exists($file)
     {
         return file_exists($file);
